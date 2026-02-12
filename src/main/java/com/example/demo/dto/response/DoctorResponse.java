@@ -1,24 +1,17 @@
-package com.example.demo.domain;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+package com.example.demo.dto.response;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+
 @Getter
 @Setter
-@Entity
-@Table(name = "patients")
-public class Patient {
-
-    @Id
+public class DoctorResponse {
     private String amka;
-
     private String fullName;
+    private String specialty;
     private String phone;
-    private String password;
+    private String area;
 
     public String getAmka() { return amka; }
     public void setAmka(String amka) { this.amka = amka; }
@@ -26,9 +19,12 @@ public class Patient {
     public String getFullName() { return fullName; }
     public void setFullName(String fullName) { this.fullName = fullName; }
 
+    public String getSpecialty() { return specialty; }
+    public void setSpecialty(String specialty) { this.specialty = specialty; }
+
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public String getArea() { return area; }
+    public void setArea(String area) { this.area = area; }
 }

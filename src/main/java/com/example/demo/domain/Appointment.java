@@ -3,9 +3,12 @@ package com.example.demo.domain;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
-
-
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+@Getter
+@Setter
 @Entity
 @Table(name = "appointments")
 public class Appointment {

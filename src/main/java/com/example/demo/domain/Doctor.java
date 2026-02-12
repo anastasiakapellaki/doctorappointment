@@ -3,7 +3,12 @@ package com.example.demo.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+@Getter
+@Setter
 @Entity
 @Table(name = "doctors")
 public class Doctor {
