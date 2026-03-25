@@ -51,8 +51,6 @@ public class AppointmentController {
         return appointmentService.week(patientAmka, date);
     }
 
-    // Ραντεβού μήνα
-    // GET /appointments/month?patientAmka=123...&year=2026&month=2
     @GetMapping("/month")
     public List<AppointmentResponse> month(@RequestParam String patientAmka,
                                            @RequestParam int year,

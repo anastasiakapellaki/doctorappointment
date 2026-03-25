@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medical Doctor Appointments</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f7fb;
+      color: #222;
+    }
+
+    header {
+      background: #1f4e79;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 0 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #1f4e79;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      background: #1f4e79;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 14px;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #163a59;
+    }
+
+    .result {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #eef4fa;
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+
+    .doctor-item, .appointment-item {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 10px;
+      background: #fafafa;
+    }
+
+    .small {
+      font-size: 13px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Medical Doctor Appointments</h1>
+  <p>Simple UI for your Spring Boot backend</p>
+</header>
+
+<div class="container">
+  <div class="grid">
+
+    <div class="card">
+      <h2>Register</h2>
+      <label>AMKA</label>
+      <input id="regAmka" type="text">
+
+      <label>Full Name</label>
+      <input id="regFullName" type="text">
+
+      <label>Phone</label>
+      <input id="regPhone" type="text">
+
+      <label>Password</label>
+      <input id="regPassword" type="password">
+
+      <button onclick="registerUser()">Register</button>
+      <div id="registerResult" class="result"></div>
+    </div>
+
+    <div class="card">
+      <h2>Login</h2>
+      <label>AMKA</label>
+      <input id="loginAmka" type="text">
+
+      <label>Password</label>
+      <input id="loginPassword" type="password">
+
+      <button onclick="loginUser()">Login</button>
+      <div id="loginResult" class="result"></div>
+    </div>
+
+    <div class="card">
+      <h2>Search Doctors</h2>
+      <label>Specialty</label>
+      <input id="doctorSpecialty" type="text" placeholder="e.g. Cardiology">
+
+      <label>Area</label>
+      <input id="doctorArea" type="text" placeholder="e.g. Athens">
+
+      <button onclick="searchDoctors()">Search</button>
+      <div id="doctorResult" class="result"></div>
+    </div>
+
+    <div class="card">
+      <h2>Doctor Booked Slots</h2>
+      <label>Doctor AMKA</label>
+      <input id="slotDoctorAmka" type="text">
+
+      <label>Date</label>
+      <input id="slotDate" type="date">
+
+      <button onclick="getBookedSlots()">Show Booked Slots</button>
+      <div id="slotsResult" class="result"></div>
+    </div>
+
+    <div class="card">
+      <h2>Create Appointment</h2>
+      <label>Patient AMKA</label>
+      <input id="appPatientAmka" type="text">
+
+      <label>Doctor AMKA</label>
+      <input id="appDoctorAmka" type="text">
+
+      <label>Date</label>
+      <input id="appDate" type="date">
+
+      <label>Time</label>
+      <input id="appTime" type="time">
+
+      <label>Reason</label>
+      <textarea id="appReason"></textarea>
+
+      <button onclick="createAppointment()">Create Appointment</button>
+      <div id="createAppointmentResult" class="result"></div>
+    </div>
+
+    <div class="card">
+      <h2>Cancel Appointment</h2>
+      <label>Patient AMKA</label>
+      <input id="cancelPatientAmka" type="text">
+
+      <label>Appointment ID</label>
+      <input id="cancelAppointmentId" type="number">
+
+      <button onclick="cancelAppointment()">Cancel</button>
+      <div id="cancelResult" class="result"></div>
+    </div>
+
+    <div class="card">
+      <h2>Weekly Appointments</h2>
+      <label>Patient AMKA</label>
+      <input id="weekPatientAmka" type="text">
+
+      <label>Date inside week</label>
+      <input id="weekDate" type="date">
+
+      <button onclick="getWeekAppointments()">Show Week</button>
+      <div id="weekResult" class="result"></div>
+    </div>
+
+    <div class="card">
+      <h2>Monthly Appointments</h2>
+      <label>Patient AMKA</label>
+      <input id="monthPatientAmka" type="text">
+
+      <label>Year</label>
+      <input id="monthYear" type="number" placeholder="2026">
+
+      <label>Month</label>
+      <input id="monthMonth" type="number" placeholder="1-12">
+
+      <button onclick="getMonthAppointments()">Show Month</button>
+      <div id="monthResult" class="result"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function showResult(elementId, text) {
+    document.getElementById(elementId).textContent = text;
+  }
+
+  function formatJson(data) {
+    return JSON.stringify(data, null, 2);
+  }
+
+  async function registerUser() {
+    const body = {
+      amka: document.getElementById('regAmka').value,
+      fullName: document.getElementById('regFullName').value,
+      phone: document.getElementById('regPhone').value,
+      password: document.getElementById('regPassword').value
+    };
+
+    try {
+      const response = await fetch('/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      const text = await response.text();
+      showResult('registerResult', `Status: ${response.status}\n${text}`);
+    } catch (e) {
+      showResult('registerResult', 'Error: ' + e.message);
+    }
+  }
+
+  async function loginUser() {
+    const body = {
+      amka: document.getElementById('loginAmka').value,
+      password: document.getElementById('loginPassword').value
+    };
+
+    try {
+      const response = await fetch('/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      const text = await response.text();
+      showResult('loginResult', `Status: ${response.status}\n${text}`);
+    } catch (e) {
+      showResult('loginResult', 'Error: ' + e.message);
+    }
+  }
+
+  async function searchDoctors() {
+    const specialty = encodeURIComponent(document.getElementById('doctorSpecialty').value);
+    const area = encodeURIComponent(document.getElementById('doctorArea').value);
+
+    try {
+      const response = await fetch(`/doctors?specialty=${specialty}&area=${area}`);
+      const data = await response.json();
+      showResult('doctorResult', formatJson(data));
+    } catch (e) {
+      showResult('doctorResult', 'Error: ' + e.message);
+    }
+  }
+
+  async function getBookedSlots() {
+    const doctorAmka = encodeURIComponent(document.getElementById('slotDoctorAmka').value);
+    const date = encodeURIComponent(document.getElementById('slotDate').value);
+
+    try {
+      const response = await fetch(`/appointments/doctor/${doctorAmka}/booked?date=${date}`);
+      const data = await response.json();
+      showResult('slotsResult', formatJson(data));
+    } catch (e) {
+      showResult('slotsResult', 'Error: ' + e.message);
+    }
+  }
+
+  async function createAppointment() {
+    const patientAmka = encodeURIComponent(document.getElementById('appPatientAmka').value);
+
+    const body = {
+      doctorAmka: document.getElementById('appDoctorAmka').value,
+      date: document.getElementById('appDate').value,
+      time: document.getElementById('appTime').value,
+      reason: document.getElementById('appReason').value
+    };
+
+    try {
+      const response = await fetch(`/appointments?patientAmka=${patientAmka}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      const text = await response.text();
+      showResult('createAppointmentResult', `Status: ${response.status}\n${text}`);
+    } catch (e) {
+      showResult('createAppointmentResult', 'Error: ' + e.message);
+    }
+  }
+
+  async function cancelAppointment() {
+    const patientAmka = encodeURIComponent(document.getElementById('cancelPatientAmka').value);
+    const id = encodeURIComponent(document.getElementById('cancelAppointmentId').value);
+
+    try {
+      const response = await fetch(`/appointments/${id}/cancel?patientAmka=${patientAmka}`, {
+        method: 'PUT'
+      });
+
+      const text = await response.text();
+      showResult('cancelResult', `Status: ${response.status}\n${text}`);
+    } catch (e) {
+      showResult('cancelResult', 'Error: ' + e.message);
+    }
+  }
+
+  async function getWeekAppointments() {
+    const patientAmka = encodeURIComponent(document.getElementById('weekPatientAmka').value);
+    const date = encodeURIComponent(document.getElementById('weekDate').value);
+
+    try {
+      const response = await fetch(`/appointments/week?patientAmka=${patientAmka}&date=${date}`);
+      const data = await response.json();
+      showResult('weekResult', formatJson(data));
+    } catch (e) {
+      showResult('weekResult', 'Error: ' + e.message);
+    }
+  }
+
+  async function getMonthAppointments() {
+    const patientAmka = encodeURIComponent(document.getElementById('monthPatientAmka').value);
+    const year = encodeURIComponent(document.getElementById('monthYear').value);
+    const month = encodeURIComponent(document.getElementById('monthMonth').value);
+
+    try {
+      const response = await fetch(`/appointments/month?patientAmka=${patientAmka}&year=${year}&month=${month}`);
+      const data = await response.json();
+      showResult('monthResult', formatJson(data));
+    } catch (e) {
+      showResult('monthResult', 'Error: ' + e.message);
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,8 +1,7 @@
 package com.example.demo.service;
 
-
-
 import com.example.demo.domain.Patient;
+import com.example.demo.dto.request.LoginRequest;
 import com.example.demo.dto.request.RegisterRequest;
 import com.example.demo.repository.PatientRepository;
 import org.springframework.stereotype.Service;
@@ -23,5 +22,11 @@ public class AuthService {
         p.setPhone(req.getPhone());
         p.setPassword(req.getPassword());
         patientRepository.save(p);
+    }
+
+    public boolean login(LoginRequest req) {
+        return patientRepository
+                .findByAmkaAndPassword(req.getAmka(), req.getPassword())
+                .isPresent();
     }
 }
